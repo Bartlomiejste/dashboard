@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { M_DOWN } from "../../utils/viewport";
 
 const LoginContainer = styled.div`
   position: absolute;
@@ -18,6 +19,10 @@ const LoginForm = styled.div`
   padding: 20px;
   background-color: #f2f2f2;
   border-radius: 5px;
+
+  @media ${M_DOWN} {
+    width: 200px;
+  }
 `;
 
 const Logo = styled.img`
