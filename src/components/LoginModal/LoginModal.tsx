@@ -55,6 +55,10 @@ const Button = styled.button`
   &:hover {
     background-color: #ffa671;
   }
+
+  @media ${M_DOWN} {
+    width: 100%;
+  }
 `;
 
 const Auth = () => {
