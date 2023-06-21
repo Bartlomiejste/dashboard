@@ -5,6 +5,7 @@ import {
   collection,
   addDoc,
   deleteDoc,
+  updateDoc,
   doc,
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
@@ -25,6 +26,9 @@ const UsersTable = () => {
   const [newUser, setNewUser] = useState<string>("");
   const [currentShift, setCurrentShift] = useState<string>("");
   const [isWorkInTheSystem, setIsWorkInTheSystem] = useState<boolean>(false);
+
+  // Update user
+  const [updateNameUser, setUpdateNameUser] = useState<string>("");
 
   const handleCheckboxChange = (value: boolean) => {
     setIsWorkInTheSystem(value);
@@ -66,6 +70,11 @@ const UsersTable = () => {
     await deleteDoc(userDoc);
   };
 
+  const updateUser = async (id: string) => {
+    const userDoc = doc(db, "user", id);
+    await updateDoc(userDoc, { mechanic: updateNameUser });
+  };
+
   return (
     <>
       <div>
@@ -105,6 +114,12 @@ const UsersTable = () => {
         return (
           <div key={user.id}>
             <div>{user.mechanic}</div>
+            <input
+              placeholder="Edit name"
+              onChange={(e) => setUpdateNameUser(e.target.value)}
+            />
+            <button onClick={() => updateUser(user.id)}>Update name</button>
+
             <div style={{ color: user.workInTheSystem ? "green" : "red" }}>
               {user.shift}
             </div>
