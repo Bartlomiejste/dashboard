@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 
-import { getDocs, collection, addDoc } from "firebase/firestore";
+import {
+  getDocs,
+  collection,
+  addDoc,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import { db } from "../../config/firebase";
 import { Auth } from "../Authorization/Auth";
 
@@ -12,26 +18,9 @@ interface User {
 }
 
 const UsersTable = () => {
-  const [users, setUsers] = useState<User[]>([]);
-
   const usersCollectionRef = collection(db, "user");
 
-  const getUsers = async () => {
-    try {
-      const data = await getDocs(usersCollectionRef);
-      const filteredData = data.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-        mechanic: doc.data().mechanic,
-        shift: doc.data().shift,
-        workInTheSystem: doc.data().workInTheSystem,
-      }));
-      setUsers(filteredData);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+  const [users, setUsers] = useState<User[]>([]);
   //New users
   const [newUser, setNewUser] = useState<string>("");
   const [currentShift, setCurrentShift] = useState<string>("");
@@ -41,10 +30,6 @@ const UsersTable = () => {
     setIsWorkInTheSystem(value);
   };
 
-  useEffect(() => {
-    getUsers();
-  }, []);
-
   const onSubmitUser = async () => {
     try {
       await addDoc(usersCollectionRef, {
@@ -52,10 +37,33 @@ const UsersTable = () => {
         shift: currentShift,
         workInTheSystem: isWorkInTheSystem,
       });
-      getUsers();
     } catch (err) {
       console.log(err);
     }
+  };
+
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const data = await getDocs(usersCollectionRef);
+        const filteredData = data.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+          mechanic: doc.data().mechanic,
+          shift: doc.data().shift,
+          workInTheSystem: doc.data().workInTheSystem,
+        }));
+        setUsers(filteredData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getUsers();
+  }, [onSubmitUser]);
+
+  const deleteUser = async (id: string) => {
+    const userDoc = doc(db, "user", id);
+    await deleteDoc(userDoc);
   };
 
   return (
@@ -101,6 +109,9 @@ const UsersTable = () => {
               {user.shift}
             </div>
             <div>{user.workInTheSystem}</div>
+            <button onClick={() => deleteUser(user.id)}>
+              Usuń użytkownika
+            </button>
           </div>
         );
       })}
