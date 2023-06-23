@@ -34,6 +34,8 @@ const UsersTable = () => {
   //File Upload State
   const [fileUpload, setFileUpload] = useState<File | undefined>();
   const [inputKey, setInputKey] = useState<number>(0);
+  const [showPopup, setShowPopup] = useState(false);
+
   const handleCheckboxChange = (value: boolean) => {
     setIsWorkInTheSystem(value);
   };
@@ -85,12 +87,15 @@ const UsersTable = () => {
     const filesFolderRef = ref(storage, `fileUsers/${fileUpload.name}`);
     try {
       await uploadBytes(filesFolderRef, fileUpload);
-      setFileUpload(undefined);
+      setShowPopup(true); // Wyświetlanie popupu po pomyślnym przesłaniu pliku
+      setTimeout(() => {
+        setShowPopup(false); // Ukrywanie popupu po pewnym czasie
+      }, 3000); // Czas trwania popupu (3 sekundy w tym przypadku)
     } catch (err) {
       console.log(err);
     } finally {
-      setFileUpload(undefined); // Resetowanie wartości po zakończeniu przesyłania pliku
-      setInputKey((prevKey) => prevKey + 1); // Zmiana unikalnego klucza dla elementu <input>
+      setFileUpload(undefined);
+      setInputKey((prevKey) => prevKey + 1); // Resetowanie wartości po zakończeniu przesyłania pliku
     }
   };
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -134,6 +139,7 @@ const UsersTable = () => {
           <button onClick={onSubmitUser}>Zapisz użytkownika</button>
         </div>
         <div>
+          {showPopup && <div className="popup">Pomyślnie dodano plik</div>}
           <input key={inputKey} type="file" onChange={handleFileChange} />
           <button onClick={uploadFile}>Upload File</button>
         </div>
