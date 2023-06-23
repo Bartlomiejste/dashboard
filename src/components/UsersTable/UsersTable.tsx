@@ -8,8 +8,9 @@ import {
   updateDoc,
   doc,
 } from "firebase/firestore";
-import { db } from "../../config/firebase";
+import { db, auth, storage } from "../../config/firebase";
 import { Auth } from "../Authorization/Auth";
+import { ref, uploadBytes } from "firebase/storage";
 
 interface User {
   id: string;
@@ -30,6 +31,9 @@ const UsersTable = () => {
   // Update user
   const [updateNameUser, setUpdateNameUser] = useState<string>("");
 
+  //File Upload State
+  const [fileUpload, setFileUpload] = useState<File | undefined>();
+  const [inputKey, setInputKey] = useState<number>(0);
   const handleCheckboxChange = (value: boolean) => {
     setIsWorkInTheSystem(value);
   };
@@ -40,6 +44,7 @@ const UsersTable = () => {
         mechanic: newUser,
         shift: currentShift,
         workInTheSystem: isWorkInTheSystem,
+        userId: auth?.currentUser?.uid,
       });
     } catch (err) {
       console.log(err);
@@ -72,9 +77,29 @@ const UsersTable = () => {
 
   const updateUser = async (id: string) => {
     const userDoc = doc(db, "user", id);
-    await updateDoc(userDoc, { mechanic: updateNameUser });
+    await updateDoc(userDoc, { mechanic: updateNameUser }); // aby działalo trzeba uzyć to w innym stanie w innych komponentach
   };
 
+  const uploadFile = async () => {
+    if (!fileUpload) return;
+    const filesFolderRef = ref(storage, `fileUsers/${fileUpload.name}`);
+    try {
+      await uploadBytes(filesFolderRef, fileUpload);
+      setFileUpload(undefined);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setFileUpload(undefined); // Resetowanie wartości po zakończeniu przesyłania pliku
+      setInputKey((prevKey) => prevKey + 1); // Zmiana unikalnego klucza dla elementu <input>
+    }
+  };
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      setFileUpload(file);
+    }
+  };
   return (
     <>
       <div>
@@ -107,6 +132,10 @@ const UsersTable = () => {
           <label>Nie</label>
 
           <button onClick={onSubmitUser}>Zapisz użytkownika</button>
+        </div>
+        <div>
+          <input key={inputKey} type="file" onChange={handleFileChange} />
+          <button onClick={uploadFile}>Upload File</button>
         </div>
       </div>
 

@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDqDj80HTx50mCUkSs4ea9raMFDspNzwj4",
@@ -21,3 +22,4 @@ export const auth = getAuth(app); // autoryzacja przez dowolny email
 export const googleProvider = new GoogleAuthProvider(); // autoryzacja przez gmail'a
 
 export const db = getFirestore(app); // baza danych
+export const storage = getStorage(app);
