@@ -1,24 +1,6 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 400px;
-    height: 400px;
-    background: #f1f1f1;
-    word-break: break-all;
-    border: 1px solid rgba(0, 0, 0, 0.274);
-}
-
-.bloc-tabs {
-    display: flex;
-    width: 100%;
-}
-
 .tabs {
     display: flex;
+
     align-items: center;
     padding: 20px;
     background: rgba(128, 128, 128, 0.075);
@@ -26,7 +8,6 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.274);
     position: relative;
     width: 100%;
-
 }
 
 .tabs:not(:last-child) {
@@ -51,35 +32,30 @@
 
 }
 
-button {
-    border: none;
-}
 
 .content {
     flex-direction: column;
     background: white;
-    padding: 20px;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
     height: 100%;
     display: none;
 }
 
-.content h2 {
-    padding: 0px 0 5px 0px;
-}
-
-.content hr {
-    width: 100px;
-    height: 2px;
-    background: #222;
-    margin-bottom: 5px;
-}
-
-.content p {
-
-    height: 100%;
-}
-
 .active-content {
-
     display: flex;
+
 }
+
+/* const Content=styled.div` display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: space-around;
+padding: 20px;
+background: white;
+display: none;
+`;
+
+const ActiveContent=styled.div` display: flex;
+`; */
