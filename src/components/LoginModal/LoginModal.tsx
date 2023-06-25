@@ -1,12 +1,16 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { M_DOWN } from "../../utils/viewport";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../config/firebase";
+import "./LoginModal.css";
 
 const LoginContainer = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  display: none;
 `;
 
 const LoginForm = styled.div`
@@ -62,37 +66,100 @@ const Button = styled.button`
 `;
 
 const Auth = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [registerEmail, setRegisterEmail] = useState<string>("");
+  const [registerPassword, setRegisterPassword] = useState<string>("");
 
-  const handleSignIn = () => {
-    // Obsługa logowania
+  const [loginEmail, setLoginEmail] = useState<string>("");
+  const [loginPassword, setLoginPassword] = useState<string>("");
+
+  const handleSignIn = () => {};
+
+  const register = async () => {
+    try {
+      const user = await createUserWithEmailAndPassword(
+        auth,
+        registerEmail,
+        registerPassword
+      );
+      setRegisterEmail("");
+      setRegisterPassword("");
+    } catch (error) {
+      console.log("errorRegister", error);
+    }
   };
 
-  const handleSignUp = () => {
-    // Obsługa rejestracji
+  const [toggleState, setToggleState] = useState<number>(1);
+
+  const toggleTab = (index: number) => {
+    setToggleState(index);
   };
 
   return (
     <>
       <Logo src="/logo.png" alt="Logo" />
+      <div className="container">
+        <div className="bloc-tabs">
+          <button
+            className={toggleState === 1 ? "tabs active-tabs" : "tabs"}
+            onClick={() => toggleTab(1)}
+          >
+            Zaloguj się
+          </button>
+          <button
+            className={toggleState === 2 ? "tabs active-tabs" : "tabs"}
+            onClick={() => toggleTab(2)}
+          >
+            Zajerestruj się
+          </button>
+        </div>
+        <div className="content-tabs">
+          <div
+            className={
+              toggleState === 1 ? "content  active-content" : "content"
+            }
+          >
+            <h2>Content 1</h2>
+            <hr />
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati
+              praesentium incidunt quia aspernatur quasi quidem facilis quo
+              nihil vel voluptatum?
+            </p>
+          </div>
+
+          <div
+            className={
+              toggleState === 2 ? "content  active-content" : "content"
+            }
+          >
+            <h2>Content 2</h2>
+            <hr />
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente
+              voluptatum qui adipisci.
+            </p>
+          </div>
+        </div>
+      </div>
       <LoginContainer>
         <LoginForm>
           <Title>Logowanie do systemu</Title>
           <Input
             type="email"
             placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={registerEmail}
+            onChange={(e) => setRegisterEmail(e.target.value)}
+            required
           />
           <Input
             type="password"
             placeholder="Hasło"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={registerPassword}
+            onChange={(e) => setRegisterPassword(e.target.value)}
+            required
           />
           <Button onClick={handleSignIn}>Zaloguj się</Button>
-          <Button onClick={handleSignUp}>Zarejestruj się</Button>
+          <Button onClick={register}>Zarejestruj się</Button>
         </LoginForm>
       </LoginContainer>
     </>
