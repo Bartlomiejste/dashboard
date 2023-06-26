@@ -75,7 +75,7 @@ const Container = styled.div`
   transform: translate(-50%, -50%);
   width: 400px;
   height: 400px;
-  background: #f1f1f1;
+  background: white;
   word-break: break-all;
   border: 1px solid rgba(0, 0, 0, 0.274);
 `;
@@ -98,6 +98,25 @@ const Tabs = styled.div`
   border-bottom: 1px solid rgba(0, 0, 0, 0.274);
   position: relative;
   width: 100%;
+
+  &:not(:last-child)
+    border-right: 1px solid rgba(0, 0, 0, 0.274);
+`;
+
+const ActiveTabs = styled.div`
+  background: white;
+  border-bottom: 1px solid transparent;
+
+  &::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% + 2px);
+  height: 5px;
+  background: #f08b62;
 `;
 
 const Content = styled.div`
@@ -108,6 +127,10 @@ const Content = styled.div`
   padding: 50px;
   height: 100%;
   display: none;
+`;
+
+const ActiveContent = styled.div`
+  display: flex;
 `;
 
 const Auth = () => {
