@@ -1,43 +1,73 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { M_DOWN } from "../../utils/viewport";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../config/firebase";
-import "./LoginModal.css";
-
-// const LoginContainer = styled.div`
-//   position: absolute;
-//   top: 50%;
-//   left: 50%;
-//   transform: translate(-50%, -50%);
-//   display: none;
-// `;
-
-// const LoginForm = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: space-around;
-//   align-items: center;
-//   width: 400px;
-//   height: 400px;
-//   padding: 20px;
-//   background-color: #f2f2f2;
-//   border-radius: 5px;
-
-//   @media ${M_DOWN} {
-//     width: 200px;
-//   }
-// `;
 
 const Logo = styled.img`
   margin-left: 50px;
   margin-top: 20px;
 `;
 
-// const Title = styled.h2`
-//   text-align: center;
-//   margin-bottom: 20px;
-// `;
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 400px;
+  background: white;
+  word-break: break-all;
+  border: 1px solid rgba(0, 0, 0, 0.274);
+`;
+
+const BlocTabs = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
+const Switch = styled.div<{ active?: boolean }>`
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background: rgba(128, 128, 128, 0.075);
+  cursor: pointer;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.274);
+  position: relative;
+  width: 100%;
+
+  ${(props) =>
+    props.active &&
+    `
+    background: white;
+    border-bottom: 1px solid transparent;
+
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% + 2px);
+      height: 5px;
+      background: #f08b62;
+    }
+  `}
+`;
+
+const Content = styled.div<{ active?: boolean }>`
+  display: flex;
+  flex-direction: column;
+  background: white;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+  height: 100%;
+
+  ${(props) => !props.active && `display: none;`}
+`;
 
 const Input = styled.input`
   width: 100%;
@@ -60,89 +90,18 @@ const Button = styled.button`
   &:hover {
     background-color: #ffa671;
   }
-
-  @media ${M_DOWN} {
-    width: 100%;
-  }
-`;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 400px;
-  height: 400px;
-  background: white;
-  word-break: break-all;
-  border: 1px solid rgba(0, 0, 0, 0.274);
-`;
-
-const BlocTabs = styled.div`
-  display: flex;
-  width: 100%;
-`;
-
-const Button2 = styled.div`
-  border: none;
-`;
-
-const Tabs = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 20px;
-  background: rgba(128, 128, 128, 0.075);
-  cursor: pointer;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.274);
-  position: relative;
-  width: 100%;
-
-  &:not(:last-child)
-    border-right: 1px solid rgba(0, 0, 0, 0.274);
-`;
-
-const ActiveTabs = styled.div`
-  background: white;
-  border-bottom: 1px solid transparent;
-
-  &::before {
-  content: "";
-  display: block;
-  position: absolute;
-  top: -5px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: calc(100% + 2px);
-  height: 5px;
-  background: #f08b62;
-`;
-
-const Content = styled.div`
-  flex-direction: column;
-  background: white;
-  align-items: center;
-  justify-content: center;
-  padding: 50px;
-  height: 100%;
-  display: none;
-`;
-
-const ActiveContent = styled.div`
-  display: flex;
 `;
 
 const Auth = () => {
-  const [registerEmail, setRegisterEmail] = useState<string>("");
-  const [registerPassword, setRegisterPassword] = useState<string>("");
-
   const [loginEmail, setLoginEmail] = useState<string>("");
   const [loginPassword, setLoginPassword] = useState<string>("");
 
+  const [registerEmail, setRegisterEmail] = useState<string>("");
+  const [registerPassword, setRegisterPassword] = useState<string>("");
+
   const handleSignIn = () => {};
 
-  const register = async () => {
+  const handleRegister = async () => {
     try {
       const user = await createUserWithEmailAndPassword(
         auth,
@@ -167,75 +126,32 @@ const Auth = () => {
       <Logo src="/logo.png" alt="Logo" />
       <Container>
         <BlocTabs>
-          <Button2
-            className={toggleState === 1 ? "tabs active-tabs" : "tabs"}
-            onClick={() => toggleTab(1)}
-          >
+          <Switch active={toggleState === 1} onClick={() => toggleTab(1)}>
             Zaloguj się
-          </Button2>
-          <Button2
-            className={toggleState === 2 ? "tabs active-tabs" : "tabs"}
-            onClick={() => toggleTab(2)}
-          >
+          </Switch>
+          <Switch active={toggleState === 2} onClick={() => toggleTab(2)}>
             Zajerestruj się
-          </Button2>
+          </Switch>
         </BlocTabs>
-        <div className="content-tabs">
-          <div
-            className={
-              toggleState === 1 ? "content  active-content" : "content"
-            }
-          >
-            <Input
-              type="email"
-              placeholder="Email"
-              value={registerEmail}
-              onChange={(e) => setRegisterEmail(e.target.value)}
-              required
-            />
-            <Input
-              type="password"
-              placeholder="Hasło"
-              value={registerPassword}
-              onChange={(e) => setRegisterPassword(e.target.value)}
-              required
-            />
-            <Button onClick={handleSignIn}>Zaloguj się</Button>
-          </div>
 
-          <div
-            className={
-              toggleState === 2 ? "content  active-content" : "content"
-            }
-          >
-            <Input
-              type="email"
-              placeholder="Email"
-              value={registerEmail}
-              onChange={(e) => setRegisterEmail(e.target.value)}
-              required
-            />
-            <Input
-              type="password"
-              placeholder="Hasło"
-              value={registerPassword}
-              onChange={(e) => setRegisterPassword(e.target.value)}
-              required
-            />
-            <Input
-              type="password"
-              placeholder="Powtórz hasło"
-              value={registerPassword}
-              onChange={(e) => setRegisterPassword(e.target.value)}
-              required
-            />
-            <Button onClick={handleSignIn}>Zajerestruj się</Button>
-          </div>
-        </div>
-      </Container>
-      {/* <LoginContainer>
-        <LoginForm>
-          <Title>Logowanie do systemu</Title>
+        <Content active={toggleState === 1}>
+          <Input
+            type="email"
+            placeholder="Email"
+            value={loginEmail}
+            onChange={(e) => setLoginEmail(e.target.value)}
+            required
+          />
+          <Input
+            type="password"
+            placeholder="Hasło"
+            value={loginPassword}
+            onChange={(e) => setLoginPassword(e.target.value)}
+            required
+          />
+          <Button onClick={handleSignIn}>Zaloguj się</Button>
+        </Content>
+        <Content active={toggleState === 2}>
           <Input
             type="email"
             placeholder="Email"
@@ -250,10 +166,16 @@ const Auth = () => {
             onChange={(e) => setRegisterPassword(e.target.value)}
             required
           />
-          <Button onClick={handleSignIn}>Zaloguj się</Button>
-          <Button onClick={register}>Zarejestruj się</Button>
-        </LoginForm>
-      </LoginContainer> */}
+          <Input
+            type="password"
+            placeholder="Powtórz hasło"
+            value={registerPassword}
+            onChange={(e) => setRegisterPassword(e.target.value)}
+            required
+          />
+          <Button onClick={handleRegister}>Zajerestruj się</Button>
+        </Content>
+      </Container>
     </>
   );
 };
