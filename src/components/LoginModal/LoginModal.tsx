@@ -98,7 +98,8 @@ const Auth = () => {
 
   const [registerEmail, setRegisterEmail] = useState<string>("");
   const [registerPassword, setRegisterPassword] = useState<string>("");
-
+  const [registerRepeatPassword, setRegisterRepeatPassword] =
+    useState<string>("");
   const handleSignIn = () => {};
 
   const handleRegister = async () => {
@@ -110,6 +111,7 @@ const Auth = () => {
       );
       setRegisterEmail("");
       setRegisterPassword("");
+      setRegisterRepeatPassword("");
     } catch (error) {
       console.log("errorRegister", error);
     }
