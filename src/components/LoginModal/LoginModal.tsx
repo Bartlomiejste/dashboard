@@ -1,6 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+} from "firebase/auth";
 import { auth } from "../../config/firebase";
 
 const Logo = styled.img`
@@ -57,7 +62,7 @@ const Switch = styled.div<{ active?: boolean }>`
   `}
 `;
 
-const Content = styled.div<{ active?: boolean }>`
+const Content = styled.form<{ active?: boolean }>`
   display: flex;
   flex-direction: column;
   background: white;
@@ -91,33 +96,96 @@ const Button = styled.button`
     background-color: #ffa671;
   }
 `;
+const ErrorMessage = styled.div`
+  color: red;
+`;
 
 const Auth = () => {
-  const [loginEmail, setLoginEmail] = useState<string>("");
-  const [loginPassword, setLoginPassword] = useState<string>("");
-
   const [registerEmail, setRegisterEmail] = useState<string>("");
   const [registerPassword, setRegisterPassword] = useState<string>("");
+  const [loginEmail, setLoginEmail] = useState<string>("");
+  const [loginPassword, setLoginPassword] = useState<string>("");
+  const [user, setUser] = useState<string | null | undefined>(undefined);
   const [registerRepeatPassword, setRegisterRepeatPassword] =
     useState<string>("");
-  const handleSignIn = () => {};
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const handleRegister = async () => {
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser.email);
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const handleSignIn = async (event: React.FormEvent<EventTarget>) => {
+    event.preventDefault();
     try {
-      const user = await createUserWithEmailAndPassword(
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        loginEmail,
+        loginPassword
+      );
+      setLoginEmail("");
+      setLoginPassword("");
+      console.log(userCredential.user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleRegister = async (event: React.FormEvent<EventTarget>) => {
+    event.preventDefault();
+    if (!registerEmail || !registerPassword || !registerRepeatPassword) {
+      setErrorMessage("Wypełnij wszystkie pola formularza.");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(registerEmail)) {
+      setErrorMessage("Niepoprawny format adresu email.");
+      return;
+    }
+
+    if (registerPassword.length < 8) {
+      setErrorMessage("Hasło musi zawierać co najmniej 8 znaków.");
+      return;
+    }
+
+    if (registerPassword !== registerRepeatPassword) {
+      setErrorMessage("Podane hasła nie są identyczne.");
+      return;
+    }
+
+    try {
+      await createUserWithEmailAndPassword(
         auth,
         registerEmail,
         registerPassword
       );
+      console.log("Rejestracja udana");
       setRegisterEmail("");
       setRegisterPassword("");
       setRegisterRepeatPassword("");
+      setErrorMessage("");
     } catch (error) {
       console.log("errorRegister", error);
+      setErrorMessage(
+        "Wystąpił błąd podczas rejestracji lub użytkownik jest już w bazie."
+      );
     }
   };
 
-  const [toggleState, setToggleState] = useState<number>(1);
+  const logout = async () => {
+    await signOut(auth);
+    setUser(null);
+  };
+
+  const [toggleState, setToggleState] = useState(1);
 
   const toggleTab = (index: number) => {
     setToggleState(index);
@@ -132,11 +200,11 @@ const Auth = () => {
             Zaloguj się
           </Switch>
           <Switch active={toggleState === 2} onClick={() => toggleTab(2)}>
-            Zajerestruj się
+            Zarejestruj się
           </Switch>
         </BlocTabs>
 
-        <Content active={toggleState === 1}>
+        <Content active={toggleState === 1} onSubmit={handleSignIn}>
           <Input
             type="email"
             placeholder="Email"
@@ -151,9 +219,9 @@ const Auth = () => {
             onChange={(e) => setLoginPassword(e.target.value)}
             required
           />
-          <Button onClick={handleSignIn}>Zaloguj się</Button>
+          <Button>Zaloguj się</Button>
         </Content>
-        <Content active={toggleState === 2}>
+        <Content active={toggleState === 2} onSubmit={handleRegister}>
           <Input
             type="email"
             placeholder="Email"
@@ -171,13 +239,18 @@ const Auth = () => {
           <Input
             type="password"
             placeholder="Powtórz hasło"
-            value={registerPassword}
-            onChange={(e) => setRegisterPassword(e.target.value)}
+            value={registerRepeatPassword}
+            onChange={(e) => setRegisterRepeatPassword(e.target.value)}
             required
           />
-          <Button onClick={handleRegister}>Zajerestruj się</Button>
+          {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+          <Button>Zarejestruj się</Button>
         </Content>
       </Container>
+      <h4>Użytkownik zalogowany:</h4>
+      {user ? <p>{user}</p> : <p>Nie zalogowany</p>}
+
+      <button onClick={logout}>Wyloguj</button>
     </>
   );
 };
