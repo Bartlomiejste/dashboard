@@ -7,7 +7,7 @@ import { auth } from "../config/firebase";
 import Button from "../styles/Button";
 import Content from "../styles/LoginContent";
 import Input from "../styles/LoginInput";
-import ErrorMessage from "../styles/ErrorMessage";
+import { ErrorMessage } from "../styles/Message";
 
 const RegisterForm = () => {
   const [registerEmail, setRegisterEmail] = useState<string>("");

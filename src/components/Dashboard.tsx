@@ -26,7 +26,7 @@ const Dashboard = () => {
   const logout = async () => {
     try {
       await signOut(auth);
-      navigate("/");
+      navigate("/", { replace: true });
     } catch (err) {
       console.log(err);
     }
@@ -47,7 +47,7 @@ const Dashboard = () => {
   };
 
   if (!loggedIn) {
-    navigate("/");
+    navigate("/", { replace: true });
   }
 
   return (

@@ -9,7 +9,7 @@ const Container = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 440px;
-  height: 420px;
+  height: 440px;
   background: white;
   word-break: break-all;
   border: 1px solid rgba(0, 0, 0, 0.274);

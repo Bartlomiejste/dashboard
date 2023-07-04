@@ -6,12 +6,13 @@ import {
 import { auth } from "../config/firebase";
 import Content from "../styles/LoginContent";
 import Input from "../styles/LoginInput";
-import ErrorMessage from "../styles/ErrorMessage";
+import { ErrorMessage, CorrectMessage } from "../styles/Message";
 import Button from "../styles/Button";
 
 const ForgotPasswordForm = () => {
   const [email, setEmail] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [correctMessage, setCorrectMessage] = useState<string>("");
 
   const handleResetPassword = async (event: React.FormEvent<EventTarget>) => {
     event.preventDefault();
@@ -32,7 +33,7 @@ const ForgotPasswordForm = () => {
       await sendPasswordResetEmail(auth, email);
       setErrorMessage("");
       setEmail("");
-      setErrorMessage("Reset password email sent successfully.");
+      setCorrectMessage("Reset password email sent successfully.");
     } catch (error) {
       setErrorMessage("Failed to send reset password email.");
     }
@@ -47,7 +48,11 @@ const ForgotPasswordForm = () => {
         onChange={(e) => setEmail(e.target.value)}
         required
       />
-      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+      {errorMessage ? (
+        <ErrorMessage>{errorMessage}</ErrorMessage>
+      ) : (
+        <CorrectMessage>{correctMessage}</CorrectMessage>
+      )}
       <Button>Send reset password</Button>
     </Content>
   );

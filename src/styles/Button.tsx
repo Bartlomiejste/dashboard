@@ -13,7 +13,6 @@ const Button = styled.button`
 
   @media ${SM_DOWN} {
     padding: 10px;
-    font-size: 12px;
   }
 
   &:hover {

@@ -1,10 +1,14 @@
 import { useState } from "react";
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import {
+  fetchSignInMethodsForEmail,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
 import { auth, googleProvider } from "../config/firebase";
 import Button from "../styles/Button";
 import Content from "../styles/LoginContent";
 import Input from "../styles/LoginInput";
-import ErrorMessage from "../styles/ErrorMessage";
+import { ErrorMessage } from "../styles/Message";
 import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
@@ -13,9 +17,18 @@ const LoginForm = () => {
   const [loginPassword, setLoginPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const signInWithGoogle = async () => {
+  const signInWithGoogle = async (event: React.FormEvent<EventTarget>) => {
+    event.preventDefault();
     try {
+      if (!loginPassword || !loginEmail) {
+        setErrorMessage("");
+        return;
+      }
       await signInWithPopup(auth, googleProvider);
+      setLoginEmail("");
+      setLoginPassword("");
+      setErrorMessage("");
+      navigate("/dashboard");
     } catch (err) {
       return false;
     }
@@ -28,6 +41,11 @@ const LoginForm = () => {
         setErrorMessage("Please enter your password or emial.");
         return;
       }
+      const userExists = await checkUserExists(loginEmail);
+      if (!userExists) {
+        setErrorMessage("The user is not in the database.");
+        return;
+      }
       await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
       setLoginEmail("");
       setLoginPassword("");
@@ -35,6 +53,16 @@ const LoginForm = () => {
       navigate("/dashboard");
     } catch (error) {
       setErrorMessage("Bad password, please try again.");
+    }
+  };
+
+  const checkUserExists = async (email: string) => {
+    try {
+      const userCredential = await fetchSignInMethodsForEmail(auth, email);
+      return userCredential.length > 0;
+    } catch (error) {
+      console.error("Error checking user existence:", error);
+      return false;
     }
   };
 

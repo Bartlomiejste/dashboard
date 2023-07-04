@@ -3,7 +3,7 @@ import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 import TabSwitch from "./TabSwitch";
 import Container from "../styles/LoginContainer";
-import ForgotPasswordForm from "./ForgotPasswordForm";
+import ForgotPasswordForm from "./PassswordReset";
 import Logo from "./Logo";
 
 const AuthContainer = () => {
