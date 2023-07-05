@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import pencilIcon from "../assets/pencil.png";
+import disketteIcon from "../assets/diskette.png";
 
 const Table = styled.table`
   width: 100%;
@@ -16,12 +18,14 @@ const TableCell = styled.td`
   border: 1px solid #ddd;
 `;
 
-const EditIcon = styled.i`
-  /* Styl ikony edycji */
+const EditIcon = styled.img`
+  width: 16px;
+  height: 16px;
 `;
 
-const SaveIcon = styled.i`
-  /* Styl ikony zapisywania */
+const SaveIcon = styled.img`
+  width: 16px;
+  height: 16px;
 `;
 
 const MainTable = () => {
@@ -45,8 +49,8 @@ const MainTable = () => {
           <TableCell>Windows</TableCell>
           <TableCell>10-08-2023</TableCell>
           <TableCell>
-            <EditIcon>Edit</EditIcon>
-            <SaveIcon>Save</SaveIcon>
+            <EditIcon src={pencilIcon} alt="Edytuj" />
+            <SaveIcon src={disketteIcon} alt="Zapisz" />
           </TableCell>
         </tr>
       </tbody>
