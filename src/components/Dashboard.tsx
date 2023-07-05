@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { auth } from "../config/firebase";
 import { signOut, updateProfile } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import MainTable from "./MainTable";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -56,6 +57,7 @@ const Dashboard = () => {
       <p>{inputText}</p>
       <button onClick={logout}>Wyloguj</button>
       <button onClick={saveText}>Zapisz Tekst</button>
+      <MainTable />
     </div>
   );
 };
