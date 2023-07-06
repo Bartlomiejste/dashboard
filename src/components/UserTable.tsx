@@ -28,7 +28,7 @@ const SaveIcon = styled.img`
   height: 16px;
 `;
 
-const MainTable = () => {
+const UserTable = () => {
   return (
     <Table>
       <thead>
@@ -58,4 +58,4 @@ const MainTable = () => {
   );
 };
 
-export default MainTable;
+export default UserTable;

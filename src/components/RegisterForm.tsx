@@ -7,7 +7,7 @@ import { auth } from "../config/firebase";
 import Button from "../styles/Button";
 import Content from "../styles/LoginContent";
 import Input from "../styles/LoginInput";
-import { ErrorMessage } from "../styles/Message";
+import { ErrorMessage, CorrectMessage } from "../styles/Message";
 
 const RegisterForm = () => {
   const [registerEmail, setRegisterEmail] = useState<string>("");
@@ -15,6 +15,7 @@ const RegisterForm = () => {
   const [registerRepeatPassword, setRegisterRepeatPassword] =
     useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [correctMessage, setCorrectMessage] = useState<string>("");
 
   const checkIfUserExists = async (email: string) => {
     try {
@@ -62,7 +63,7 @@ const RegisterForm = () => {
       setRegisterEmail("");
       setRegisterPassword("");
       setRegisterRepeatPassword("");
-      setErrorMessage("");
+      setCorrectMessage("User registration was successful.");
     } catch (error) {
       setErrorMessage("There was an error during registration");
     }
@@ -91,7 +92,11 @@ const RegisterForm = () => {
         onChange={(e) => setRegisterRepeatPassword(e.target.value)}
         required
       />
-      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+      {errorMessage ? (
+        <ErrorMessage>{errorMessage}</ErrorMessage>
+      ) : (
+        <CorrectMessage>{correctMessage}</CorrectMessage>
+      )}
       <Button>Register</Button>
     </Content>
   );

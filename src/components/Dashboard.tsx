@@ -2,7 +2,18 @@ import { useState, useEffect } from "react";
 import { auth } from "../config/firebase";
 import { signOut, updateProfile } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import MainTable from "./MainTable";
+import MainTable from "./UserTable";
+import AsideNavigation from "./AsideNavigation";
+import Logo from "./Logo";
+import styled from "styled-components";
+import MainContent from "./MainContent";
+
+const MainContainer = styled.div`
+  width: 100%;
+  height: 100vh;
+  background: #f08b62;
+  overflow: hidden;
+`;
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -52,13 +63,15 @@ const Dashboard = () => {
   }
 
   return (
-    <div>
-      <input value={inputText} onChange={handleInputChange} />
+    <MainContainer>
+      <MainContent />
+      {/* <input value={inputText} onChange={handleInputChange} />
       <p>{inputText}</p>
       <button onClick={logout}>Wyloguj</button>
-      <button onClick={saveText}>Zapisz Tekst</button>
-      <MainTable />
-    </div>
+      <button onClick={saveText}>Zapisz Tekst</button> */}
+      {/* <MainTable /> */}
+      {/* <AsideNavigation /> */}
+    </MainContainer>
   );
 };
 
