@@ -3,11 +3,11 @@ import {
   createUserWithEmailAndPassword,
   fetchSignInMethodsForEmail,
 } from "firebase/auth";
-import { auth } from "../config/firebase";
-import Button from "../styles/Button";
-import Content from "../styles/LoginContent";
-import Input from "../styles/LoginInput";
-import { ErrorMessage, CorrectMessage } from "../styles/Message";
+import { auth } from "../../config/firebase";
+import Button from "../../ui/Button/Button";
+import Input from "../../ui/LoginInput/LoginInput";
+import { ErrorMessage, CorrectMessage } from "../../ui/Message/Message";
+import LoginContentStyled from "../../ui/LoginContent/LoginContent";
 
 const RegisterForm = () => {
   const [registerEmail, setRegisterEmail] = useState<string>("");
@@ -70,7 +70,7 @@ const RegisterForm = () => {
   };
 
   return (
-    <Content onSubmit={handleRegister} noValidate>
+    <LoginContentStyled onSubmit={handleRegister} noValidate>
       <Input
         type="email"
         placeholder="Email"
@@ -98,7 +98,7 @@ const RegisterForm = () => {
         <CorrectMessage>{correctMessage}</CorrectMessage>
       )}
       <Button>Register</Button>
-    </Content>
+    </LoginContentStyled>
   );
 };
 

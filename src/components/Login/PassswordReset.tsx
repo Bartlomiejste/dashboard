@@ -3,11 +3,11 @@ import {
   sendPasswordResetEmail,
   fetchSignInMethodsForEmail,
 } from "firebase/auth";
-import { auth } from "../config/firebase";
-import Content from "../styles/LoginContent";
-import Input from "../styles/LoginInput";
-import { ErrorMessage, CorrectMessage } from "../styles/Message";
-import Button from "../styles/Button";
+import { auth } from "../../config/firebase";
+import Input from "../../ui/LoginInput/LoginInput";
+import { ErrorMessage, CorrectMessage } from "../../ui/Message/Message";
+import Button from "../../ui/Button/Button";
+import LoginContentStyled from "../../ui/LoginContent/LoginContent";
 
 const ForgotPasswordForm = () => {
   const [email, setEmail] = useState<string>("");
@@ -40,7 +40,7 @@ const ForgotPasswordForm = () => {
   };
 
   return (
-    <Content onSubmit={handleResetPassword} noValidate>
+    <LoginContentStyled onSubmit={handleResetPassword} noValidate>
       <Input
         type="email"
         placeholder="Email"
@@ -54,7 +54,7 @@ const ForgotPasswordForm = () => {
         <CorrectMessage>{correctMessage}</CorrectMessage>
       )}
       <Button>Send reset password</Button>
-    </Content>
+    </LoginContentStyled>
   );
 };
 

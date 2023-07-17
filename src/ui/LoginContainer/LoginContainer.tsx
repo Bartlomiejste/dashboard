@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { SM_DOWN } from "../utils/viewport";
+import { SM_DOWN } from "../../utils/viewport";
 
-const Container = styled.div`
+const LoginContainerStyled = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -19,4 +19,4 @@ const Container = styled.div`
   }
 `;
 
-export default Container;
+export default LoginContainerStyled;

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { SM_DOWN } from "../utils/viewport";
+import { SM_DOWN } from "../../utils/viewport";
 
 export const ErrorMessage = styled.div`
   color: red;

@@ -2,11 +2,11 @@ import { useState } from "react";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 import TabSwitch from "./TabSwitch";
-import Container from "../styles/LoginContainer";
 import ForgotPasswordForm from "./PassswordReset";
-import Logo from "./Logo";
+import LogoLogin from "../Logo/LogoLogin";
+import LoginContainerStyled from "../../ui/LoginContainer/LoginContainer";
 
-const AuthContainer = () => {
+const LoginContainer = () => {
   const [toggleState, setToggleState] = useState<number>(1);
 
   const toggleTab = (index: number) => {
@@ -15,8 +15,8 @@ const AuthContainer = () => {
 
   return (
     <>
-      <Logo />
-      <Container>
+      <LogoLogin />
+      <LoginContainerStyled>
         <TabSwitch toggleTab={toggleTab} toggleState={toggleState} />
         {toggleState === 1 ? (
           <LoginForm />
@@ -25,9 +25,9 @@ const AuthContainer = () => {
         ) : (
           <ForgotPasswordForm />
         )}
-      </Container>
+      </LoginContainerStyled>
     </>
   );
 };
 
-export default AuthContainer;
+export default LoginContainer;

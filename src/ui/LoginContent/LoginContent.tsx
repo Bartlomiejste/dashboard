@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { SM_DOWN } from "../utils/viewport";
+import { SM_DOWN } from "../../utils/viewport";
 
-const Content = styled.form`
+const LoginContentStyled = styled.form`
   display: flex;
   flex-direction: column;
   background: white;
@@ -14,4 +14,4 @@ const Content = styled.form`
   }
 `;
 
-export default Content;
+export default LoginContentStyled;

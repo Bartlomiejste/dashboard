@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import AuthContainer from "../components/AuthContainer";
+import LoginContainer from "../components/Login/LoginContainer";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../config/firebase";
 
@@ -20,7 +20,7 @@ const Auth = () => {
 
   return (
     <>
-      <AuthContainer />
+      <LoginContainer />
     </>
   );
 };

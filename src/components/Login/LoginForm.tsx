@@ -4,12 +4,12 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
-import { auth, googleProvider } from "../config/firebase";
-import Button from "../styles/Button";
-import Content from "../styles/LoginContent";
-import Input from "../styles/LoginInput";
-import { ErrorMessage } from "../styles/Message";
+import { auth, googleProvider } from "../../config/firebase";
+import Button from "../../ui/Button/Button";
+import Input from "../../ui/LoginInput/LoginInput";
+import { ErrorMessage } from "../../ui/Message/Message";
 import { useNavigate } from "react-router-dom";
+import LoginContentStyled from "../../ui/LoginContent/LoginContent";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -67,7 +67,7 @@ const LoginForm = () => {
   };
 
   return (
-    <Content onSubmit={handleSignIn} noValidate>
+    <LoginContentStyled onSubmit={handleSignIn} noValidate>
       <Input
         type="email"
         placeholder="Email"
@@ -85,7 +85,7 @@ const LoginForm = () => {
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
       <Button>Log in</Button>
       <Button onClick={signInWithGoogle}>Sign in with Google</Button>
-    </Content>
+    </LoginContentStyled>
   );
 };
 
