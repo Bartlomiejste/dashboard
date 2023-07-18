@@ -27,7 +27,7 @@
 ## Technologies and libraries
 
 | Technology | Description | 
-| ------------------------------------ | ----- |
+| ---| --- |
 | ![library](https://user-images.githubusercontent.com/95884784/254391610-40baa668-d362-48be-ac54-6c1bb873334c.png) TypeScript | Main language used to make App. | 
 | ![react](https://github.com/Bartlomiejste/dashboard/assets/95884784/833b23f8-1970-4f1c-b9a1-f30355cc17d8) React | Powerfull library to create App. |  
 | ![library](https://user-images.githubusercontent.com/95884784/254391315-ca19d052-6659-4d4c-a60f-3478fd1ad728.png) React Router DOM | Library that allows to create paths to different elements and links to it. |
