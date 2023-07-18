@@ -24,13 +24,12 @@
 4. Explore the App <br/><br/>
 
 
-![react](https://user-images.githubusercontent.com/95884784/254389208-fec42ab3-2dee-4db3-8905-39abc6f01b99.png)
 ## Technologies and libraries
 
 | Technology | Description | 
 | --- | --- |
 | TypeScript | Main language used to make App. | 
-| React | Powerfull library to create App. |  
+| ![react (1)](https://github.com/Bartlomiejste/dashboard/assets/95884784/833b23f8-1970-4f1c-b9a1-f30355cc17d8) React | Powerfull library to create App. |  
 | React Router DOM| Library that allows to create paths to different elements and links to it. |
 | Styled Components | Styled Components is a popular library for styling user interfaces in JavaScript and React applications. |
 | Firebase | Firebase is a comprehensive platform developed by Google that offers a variety of services and tools for building and managing web and mobile applications. My database.  |
