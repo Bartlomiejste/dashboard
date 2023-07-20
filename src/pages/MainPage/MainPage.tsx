@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import AsideNavigation from "../../components/AsideNavigation";
-import UserTable from "../../components/UserTable";
+import MainContainer from "../../components/MainContainer";
 
 const MainPageStyled = styled.div`
   position: relative;
@@ -10,10 +9,10 @@ const MainPageStyled = styled.div`
   background: black;
 `;
 
-const MainPage = () => {
+const MainPage: React.FC = () => {
   return (
     <MainPageStyled>
-      <AsideNavigation />
+      <MainContainer />
     </MainPageStyled>
   );
 };

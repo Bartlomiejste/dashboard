@@ -4,7 +4,16 @@ import { signOut, updateProfile } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import MainPage from "../pages/MainPage/MainPage";
 import { MainContainerStyled } from "../ui/MainContainer";
+import Layout from "./layout/Layout";
+import Chat from "./Chat/Chat";
+import AsideNavigation from "./AsideNavigation";
+import styled from "styled-components";
 
+const DashboardStyled = styled.div`
+  position: absolute;
+  background: pink;
+  left: 500px;
+`;
 const MainContainer = () => {
   const navigate = useNavigate();
   const [inputText, setInputText] = useState("");
@@ -53,15 +62,17 @@ const MainContainer = () => {
   }
 
   return (
-    <MainContainerStyled>
-      <MainPage />
-      {/* <input value={inputText} onChange={handleInputChange} />
+    <>
+      <Layout>
+        <DashboardStyled>Strona główna projektu</DashboardStyled>
+        {/* <input value={inputText} onChange={handleInputChange} />
       <p>{inputText}</p>
       <button onClick={logout}>Wyloguj</button>
       <button onClick={saveText}>Zapisz Tekst</button> */}
-      {/* <UserTable /> */}
-      {/* <AsideNavigation /> */}
-    </MainContainerStyled>
+        {/* <UserTable /> */}
+        {/* <AsideNavigation /> */}
+      </Layout>
+    </>
   );
 };
 
