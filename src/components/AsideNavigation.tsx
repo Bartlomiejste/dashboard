@@ -4,34 +4,17 @@ import { auth } from "../config/firebase";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import NavigationLink from "./NavigationLink";
+import Button from "../ui/Button/Button";
 
 const AsideContainer = styled.div`
   position: absolute;
   left: 0;
   top: 0;
+  display: flex;
+  flex-direction: column;
   height: 100vh;
   width: 300px;
   background: #282f39;
-`;
-
-const LogoAside = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-`;
-
-const NavItem = styled.div`
-  padding: 10px;
-  color: white;
-  cursor: pointer;
-`;
-
-const LogoutButton = styled.button`
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
 `;
 
 const AsideNavigation = () => {
@@ -48,13 +31,9 @@ const AsideNavigation = () => {
 
   return (
     <AsideContainer>
-      <LogoAside>
-        <LogoAsideNavigation />
-      </LogoAside>
-      <NavItem>
-        <NavigationLink />
-      </NavItem>
-      <LogoutButton onClick={logout}>Log out</LogoutButton>
+      <LogoAsideNavigation />
+      <NavigationLink />
+      <Button onClick={logout}>Log out</Button>
     </AsideContainer>
   );
 };
