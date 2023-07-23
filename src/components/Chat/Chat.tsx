@@ -11,8 +11,6 @@ import {
 } from "firebase/firestore";
 import styled from "styled-components";
 import Layout from "../layout/Layout";
-import AsideNavigation from "../AsideNavigation";
-import { MainContainerStyled } from "../../ui/MainContainer";
 
 const Chatstyle = styled.div`
   background: pink;

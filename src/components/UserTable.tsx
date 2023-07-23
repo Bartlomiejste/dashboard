@@ -2,6 +2,7 @@ import styled from "styled-components";
 import pencilIcon from "../assets/pencil.png";
 import disketteIcon from "../assets/diskette.png";
 
+//testy !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
@@ -28,7 +29,7 @@ const SaveIcon = styled.img`
   height: 16px;
 `;
 
-const UserTable = () => {
+const UserTable: React.FC = () => {
   return (
     <Table>
       <thead>

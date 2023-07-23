@@ -15,7 +15,7 @@ const LogoAsideNavigationStyled = styled(CustomImg)`
   margin-top: 20px;
 `;
 
-const LogoAsideNavigation = () => {
+const LogoAsideNavigation: React.FC = () => {
   return (
     <LogoAside>
       <LogoAsideNavigationStyled src="/logoNav.png" alt="Logo" />

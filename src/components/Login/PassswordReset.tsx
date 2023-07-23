@@ -9,7 +9,7 @@ import { ErrorMessage, CorrectMessage } from "../../ui/Message/Message";
 import Button from "../../ui/Button/Button";
 import LoginContentStyled from "../../ui/LoginContent/LoginContent";
 
-const ForgotPasswordForm = () => {
+const ForgotPasswordForm: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [correctMessage, setCorrectMessage] = useState<string>("");

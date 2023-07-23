@@ -23,10 +23,6 @@ const LayoutContainer = styled.div`
   overflow: hidden;
 `;
 
-const MainContent = styled.div`
-  padding-left: 300px; /* Width of the navigation */
-`;
-
 interface LayoutProps {
   children: ReactNode;
 }

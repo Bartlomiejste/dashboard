@@ -11,7 +11,7 @@ import { ErrorMessage } from "../../ui/Message/Message";
 import { useNavigate } from "react-router-dom";
 import LoginContentStyled from "../../ui/LoginContent/LoginContent";
 
-const LoginForm = () => {
+const LoginForm: React.FC = () => {
   const navigate = useNavigate();
   const [loginEmail, setLoginEmail] = useState<string>("");
   const [loginPassword, setLoginPassword] = useState<string>("");

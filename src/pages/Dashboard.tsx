@@ -2,11 +2,7 @@ import { useState, useEffect } from "react";
 import { auth } from "../config/firebase";
 import { signOut, updateProfile } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import MainPage from "../pages/MainPage/MainPage";
-import { MainContainerStyled } from "../ui/MainContainer";
-import Layout from "./layout/Layout";
-import Chat from "./Chat/Chat";
-import AsideNavigation from "./AsideNavigation";
+import Layout from "../components/layout/Layout";
 import styled from "styled-components";
 
 const DashboardStyled = styled.div`
@@ -14,7 +10,7 @@ const DashboardStyled = styled.div`
   background: pink;
   left: 500px;
 `;
-const MainContainer = () => {
+const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const [inputText, setInputText] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
@@ -76,4 +72,4 @@ const MainContainer = () => {
   );
 };
 
-export default MainContainer;
+export default Dashboard;

@@ -6,7 +6,7 @@ const LogoLoginStyled = styled(CustomImg)`
   margin-top: 20px;
 `;
 
-const LogoLogin = () => {
+const LogoLogin: React.FC = () => {
   return <LogoLoginStyled src="/logo.png" alt="Logo" />;
 };
 

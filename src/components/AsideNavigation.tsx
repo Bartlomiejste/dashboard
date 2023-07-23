@@ -3,7 +3,7 @@ import LogoAsideNavigation from "./Logo/LogoAsideNavigation";
 import { auth } from "../config/firebase";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import NavigationLink from "./NavigationLink";
+import NavigationLink from "./Navigation/NavigationLink";
 import Button from "../ui/Button/Button";
 
 const AsideContainer = styled.div`
@@ -17,7 +17,7 @@ const AsideContainer = styled.div`
   background: #282f39;
 `;
 
-const AsideNavigation = () => {
+const AsideNavigation: React.FC = () => {
   const navigate = useNavigate();
 
   const logout = async () => {

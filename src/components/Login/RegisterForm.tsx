@@ -9,7 +9,7 @@ import Input from "../../ui/LoginInput/LoginInput";
 import { ErrorMessage, CorrectMessage } from "../../ui/Message/Message";
 import LoginContentStyled from "../../ui/LoginContent/LoginContent";
 
-const RegisterForm = () => {
+const RegisterForm: React.FC = () => {
   const [registerEmail, setRegisterEmail] = useState<string>("");
   const [registerPassword, setRegisterPassword] = useState<string>("");
   const [registerRepeatPassword, setRegisterRepeatPassword] =

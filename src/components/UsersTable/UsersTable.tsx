@@ -19,7 +19,7 @@ interface User {
 }
 
 //testy !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-const UsersTable = () => {
+const UsersTable: React.FC = () => {
   const usersCollectionRef = collection(db, "user");
 
   const [users, setUsers] = useState<User[]>([]);

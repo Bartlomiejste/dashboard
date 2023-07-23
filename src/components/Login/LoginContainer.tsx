@@ -6,7 +6,7 @@ import ForgotPasswordForm from "./PassswordReset";
 import LogoLogin from "../Logo/LogoLogin";
 import LoginContainerStyled from "../../ui/LoginContainer/LoginContainer";
 
-const LoginContainer = () => {
+const LoginContainer: React.FC = () => {
   const [toggleState, setToggleState] = useState<number>(1);
 
   const toggleTab = (index: number) => {
