@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { IconSvgProps, IconType, NavLinkProps } from "../../models";
 
 const IconSvg = styled.svg<IconSvgProps>`
-  width: 50%;
+  width: ${({ width }) => width || "50%"};
   height: ${({ height }) => height || "20px"};
   fill: ${({ fill }) => fill || "white"};
   transition: fill 0.3s;

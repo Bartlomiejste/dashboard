@@ -11,6 +11,11 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Auth />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/routine" element={<Chat />} />
+          <Route path="/failure" element={<Chat />} />
+          <Route path="/partsOfMachines" element={<Chat />} />
+          <Route path="/outlook" element={<Chat />} />
+          <Route path="/mgpro" element={<Chat />} />
           <Route path="/chat" element={<Chat />} />
         </Routes>
       </ErrorBoundary>

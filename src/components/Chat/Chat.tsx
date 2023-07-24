@@ -13,10 +13,13 @@ import styled from "styled-components";
 import Layout from "../layout/Layout";
 
 const Chatstyle = styled.div`
+  width: 100%;
+  height: 100%;
   background: pink;
-  position: absolute;
-  left: 500px;
+  padding-left: 350px;
 `;
+
+const MessageContainer = styled.div``;
 
 const Chat: React.FC = () => {
   const [user, setUser] = useState<any | null>(null);
@@ -90,17 +93,31 @@ const Chat: React.FC = () => {
   if (!user) {
     return <div>Please log in to use the chat.</div>;
   }
+  const formatTimestamp = (timestamp: number) => {
+    const date = new Date(timestamp);
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}.${month}.${year} ${hours}:${minutes}`;
+  };
 
   return (
     <Layout>
       <Chatstyle>
-        <div>
-          {messages.map((message, id) => (
-            <div key={id}>
+        <MessageContainer>
+          {messages.map((message) => (
+            <div key={message.id}>
               <strong>{message.sender}</strong>: {message.content}
+              <span
+                style={{ marginLeft: "8px", fontSize: "0.8rem", color: "gray" }}
+              >
+                {formatTimestamp(message.timestamp)}
+              </span>
             </div>
           ))}
-        </div>
+        </MessageContainer>
         <div>
           <input
             type="text"
@@ -113,5 +130,4 @@ const Chat: React.FC = () => {
     </Layout>
   );
 };
-
 export default Chat;
