@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { auth, db } from "../../config/firebase";
 import {
   DocumentData,
@@ -15,8 +15,25 @@ import Layout from "../layout/Layout";
 const Chatstyle = styled.div`
   width: 100%;
   height: 100%;
-  background: pink;
-  padding-left: 350px;
+  background: lightgrey;
+  padding-left: 330px;
+  overflow: auto;
+  overflow-x: hidden;
+  .message {
+    margin: 5px;
+    padding: 18px;
+    width: 100%;
+  }
+
+  .sent {
+    background-color: #f5fffa;
+    text-align: right;
+  }
+
+  .received {
+    background-color: #eee8aa;
+    text-align: left;
+  }
 `;
 
 const MessageContainer = styled.div``;
@@ -26,6 +43,10 @@ const Chat: React.FC = () => {
   const [messages, setMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState("");
 
+  const [currentUserUid, setCurrentUserUid] = useState<string | null>(null);
+
+  const messageContainerRef = useRef<HTMLDivElement>(null);
+
   // Funkcja do wysyłania wiadomości
   const sendMessage = async () => {
     if (newMessage.trim() === "") return;
@@ -33,11 +54,11 @@ const Chat: React.FC = () => {
     const currentUser = auth.currentUser;
     if (!currentUser) return;
 
-    const messageData = {
-      sender: currentUser.uid,
-      content: newMessage.trim(),
-      timestamp: Date.now(),
-    };
+    // const messageData = {
+    //   sender: currentUser.uid,
+    //   content: newMessage.trim(),
+    //   timestamp: Date.now(),
+    // };
 
     try {
       // Pobierz aktualnie zalogowanego użytkownika
@@ -56,6 +77,10 @@ const Chat: React.FC = () => {
       // Zapisz wiadomość na serwerze Firebase
       await addDoc(collection(db, "messages"), messageData);
 
+      if (messageContainerRef.current) {
+        messageContainerRef.current.scrollTop =
+          messageContainerRef.current.scrollHeight;
+      }
       setNewMessage("");
     } catch (error) {
       console.error("Error sending message:", error);
@@ -81,10 +106,18 @@ const Chat: React.FC = () => {
     return () => unsubscribe();
   }, []);
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      sendMessage();
+    }
+  };
   // Sprawdzenie, czy użytkownik jest zalogowany
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user);
+      if (user) {
+        setCurrentUserUid(user.uid);
+      }
     });
 
     return () => unsubscribe();
@@ -105,24 +138,29 @@ const Chat: React.FC = () => {
 
   return (
     <Layout>
-      <Chatstyle>
+      <Chatstyle ref={messageContainerRef}>
         <MessageContainer>
-          {messages.map((message) => (
-            <div key={message.id}>
-              <strong>{message.sender}</strong>: {message.content}
-              <span
-                style={{ marginLeft: "8px", fontSize: "0.8rem", color: "gray" }}
+          {messages
+            .slice()
+            .reverse()
+            .map((message) => (
+              <div
+                key={message.id}
+                className={`message ${
+                  message.sender === user?.email ? "sent" : "received"
+                }`}
               >
-                {formatTimestamp(message.timestamp)}
-              </span>
-            </div>
-          ))}
+                <strong>{message.sender}</strong>: {message.content}
+                <div>{formatTimestamp(message.timestamp)}</div>
+              </div>
+            ))}
         </MessageContainer>
         <div>
           <input
             type="text"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
+            onKeyDown={handleKeyPress}
           />
           <button onClick={sendMessage}>Send</button>
         </div>
