@@ -9,7 +9,6 @@ import {
   doc,
 } from "firebase/firestore";
 import { db, auth, storage } from "../../config/firebase";
-import { Auth } from "../Authorization/Auth";
 import { ref, uploadBytes } from "firebase/storage";
 
 interface User {
@@ -19,7 +18,8 @@ interface User {
   workInTheSystem: boolean;
 }
 
-const UsersTable = () => {
+//testy !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+const UsersTable: React.FC = () => {
   const usersCollectionRef = collection(db, "user");
 
   const [users, setUsers] = useState<User[]>([]);
@@ -107,10 +107,6 @@ const UsersTable = () => {
   };
   return (
     <>
-      <div>
-        <Auth />
-      </div>
-
       <div>
         <input
           placeholder="User Name..."
