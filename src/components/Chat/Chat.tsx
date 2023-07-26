@@ -14,19 +14,16 @@ import {
 import styled from "styled-components";
 import Layout from "../layout/Layout";
 
-const Chatstyle = styled.div`
+const ChatStyle = styled.div`
   width: 100%;
   height: 100%;
   background: lightgrey;
   padding-left: 300px;
   overflow: auto;
-  overflow-x: hidden;
 
   .message {
     margin: 5px 0;
     padding: 18px;
-    width: 100%;
-    word-break: break-word;
   }
 
   .sent {
@@ -40,38 +37,35 @@ const Chatstyle = styled.div`
   }
 `;
 
-const ContainerMessage = styled.div`
-  width: 100%;
-`;
-
 const TextMessage = styled.div`
   width: 100%;
+  word-break: break-word;
 `;
 
 const TimeMessage = styled.div`
   width: 100%;
 `;
 
+const ChatWrapper = styled.div`
+  margin-bottom: 80px;
+`;
+
 const ChatSentContainer = styled.div`
-  margin-top: 80px;
   display: flex;
-  justify-content: flex-start;
   align-items: center;
+  position: fixed;
+  bottom: 13px;
 `;
 
 const ChatInput = styled.input`
-  margin-left: 5px;
+  margin-left: 18px;
   padding: 18px;
-  border-radius: 2px;
   border: none;
-  width: 1225px;
   text-decoration: none;
   height: 50px;
+  width: 1150px;
   outline: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease;
-  position: fixed;
-  bottom: 0;
   color: #ffff;
   background: #282f39;
 
@@ -81,14 +75,13 @@ const ChatInput = styled.input`
 `;
 
 const ChatButton = styled.div`
-  position: fixed;
-  bottom: 10px;
-  right: 210px;
-  svg {
-    cursor: pointer;
-    align-items: center;
-    display: flex;
-  }
+  border: 1px solid #282f39;
+  height: 50px;
+  width: 50px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  cursor: pointer;
 `;
 
 const DeleteButton = styled.div`
@@ -99,7 +92,7 @@ const DeleteButton = styled.div`
   }
 `;
 
-const TimeButton = styled.div`
+const InfoMessage = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -110,43 +103,32 @@ const TimeButton = styled.div`
     justify-content: center;
   }
 `;
+
 const Chat: React.FC = () => {
   const [user, setUser] = useState<any | null>(null);
   const [messages, setMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState("");
 
-  // const [currentUserUid, setCurrentUserUid] = useState<string | null>(null);
-
   const messageContainerRef = useRef<HTMLDivElement>(null);
 
-  // Funkcja do wysyłania wiadomości
   const sendMessage = async () => {
     if (newMessage.trim() === "") return;
 
     const currentUser = auth.currentUser;
     if (!currentUser) return;
 
-    // const messageData = {
-    //   sender: currentUser.uid,
-    //   content: newMessage.trim(),
-    //   timestamp: Date.now(),
-    // };
-
     try {
-      // Pobierz aktualnie zalogowanego użytkownika
       const currentUser = auth.currentUser;
       if (!currentUser) return;
 
       const messageData = {
-        sender: currentUser.email, // Użyj adresu e-mail zamiast ID
+        sender: currentUser.email,
         content: newMessage.trim(),
         timestamp: Date.now(),
       };
 
-      // Dodaj nową wiadomość do lokalnego stanu przed zapisem na serwerze
       setMessages([...messages, messageData]);
 
-      // Zapisz wiadomość na serwerze Firebase
       await addDoc(collection(db, "messages"), messageData);
 
       if (messageContainerRef.current) {
@@ -159,7 +141,6 @@ const Chat: React.FC = () => {
     }
   };
 
-  // Nasłuchiwanie na zmiany w kolekcji 'messages' w czasie rzeczywistym
   useEffect(() => {
     const q = query(collection(db, "messages"), orderBy("timestamp", "desc"));
 
@@ -170,7 +151,6 @@ const Chat: React.FC = () => {
         snapshot.docs.forEach((doc) => {
           newMessages.push({ id: doc.id, ...doc.data() });
         });
-        // Aktualizuj widok po otrzymaniu nowych wiadomości z serwera
         setMessages(newMessages);
       }
     );
@@ -183,13 +163,10 @@ const Chat: React.FC = () => {
       sendMessage();
     }
   };
-  // Sprawdzenie, czy użytkownik jest zalogowany
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user);
-      // if (user) {
-      //   setCurrentUserUid(user.uid);
-      // }
     });
 
     return () => unsubscribe();
@@ -198,6 +175,7 @@ const Chat: React.FC = () => {
   if (!user) {
     return <div>Please log in to use the chat.</div>;
   }
+
   const formatTimestamp = (timestamp: number) => {
     const date = new Date(timestamp);
     const hours = date.getHours().toString().padStart(2, "0");
@@ -211,8 +189,6 @@ const Chat: React.FC = () => {
   const deleteMessage = async (messageId: string) => {
     try {
       await deleteDoc(doc(db, "messages", messageId));
-
-      // Usuń wiadomość z lokalnego stanu
       setMessages((prevMessages) =>
         prevMessages.filter((message) => message.id !== messageId)
       );
@@ -223,8 +199,8 @@ const Chat: React.FC = () => {
 
   return (
     <Layout>
-      <Chatstyle ref={messageContainerRef}>
-        <ContainerMessage>
+      <ChatStyle ref={messageContainerRef}>
+        <ChatWrapper>
           {messages
             .slice()
             .reverse()
@@ -236,11 +212,11 @@ const Chat: React.FC = () => {
                 }`}
               >
                 <strong>{message.sender}</strong>: {message.content}
-                <TimeButton>
+                <InfoMessage>
                   <TimeMessage>
                     {formatTimestamp(message.timestamp)}
                   </TimeMessage>
-                  {message.sender === user?.email && ( // Pokaż przycisk tylko jeśli wiadomość należy do zalogowanego użytkownika
+                  {message.sender === user?.email && (
                     <DeleteButton>
                       <svg
                         id="Layer_1"
@@ -249,16 +225,16 @@ const Chat: React.FC = () => {
                         viewBox="0 0 24 24"
                         onClick={() => deleteMessage(message.id)}
                       >
-                        <title>spam, trash, bin, garbage, delete</title>
+                        <title>Delete message</title>
                         <path d="M2.88,5,5.11,24H18.89L21.12,5ZM17.11,22H6.89L5.12,7H18.88Z" />
                         <polygon points="21 2 15 2 15 1 13 1 13 0 11 0 11 1 9 1 9 2 3 2 3 4 21 4 21 2" />
                       </svg>
                     </DeleteButton>
                   )}
-                </TimeButton>
+                </InfoMessage>
               </TextMessage>
             ))}
-        </ContainerMessage>
+        </ChatWrapper>
         <ChatSentContainer>
           <ChatInput
             type="text"
@@ -274,6 +250,7 @@ const Chat: React.FC = () => {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
+              <title>Send message</title>
               <path
                 d="M61.06 2.93974C60.8633 2.74408 60.6161 2.60685 60.346 2.54329C60.0759 2.47974 59.7934 2.49235 59.53 2.57974L3.53004 21.2397C3.25136 21.3373 3.00767 21.5149 2.82951 21.7504C2.65134 21.9858 2.54662 22.2686 2.52847 22.5633C2.51032 22.858 2.57954 23.1515 2.72747 23.407C2.87539 23.6625 3.09544 23.8687 3.36004 23.9997L28.21 35.7897L40 60.6397C40.1209 60.8959 40.3118 61.1127 40.5507 61.2649C40.7896 61.4171 41.0668 61.4985 41.35 61.4997H41.44C41.7371 61.4836 42.0227 61.38 42.2611 61.2021C42.4995 61.0242 42.68 60.7799 42.78 60.4997L61.44 4.49974C61.531 4.23043 61.5436 3.9408 61.4763 3.66461C61.4091 3.38842 61.2647 3.13703 61.06 2.93974V2.93974Z"
                 fill="#97CCEF"
@@ -285,7 +262,7 @@ const Chat: React.FC = () => {
             </svg>
           </ChatButton>
         </ChatSentContainer>
-      </Chatstyle>
+      </ChatStyle>
     </Layout>
   );
 };
